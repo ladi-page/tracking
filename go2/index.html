@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RedirectPro — Redirect Manager</title>
+<meta name="description" content="Manage GitHub-hosted redirect URLs from a modern dashboard.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">R</div><div><strong>RedirectPro</strong><span>URL Manager</span></div></div>
+    <nav>
+      <button class="nav-item active" data-view="dashboard"><span>⌂</span> Dashboard</button>
+      <button class="nav-item" data-view="redirects"><span>↗</span> Redirects</button>
+      <button class="nav-item" data-view="settings"><span>⚙</span> Settings</button>
+    </nav>
+    <div class="side-bottom">
+      <div class="connection"><i id="dot"></i><div><b id="connectionText">Not connected</b><small>GitHub repository</small></div></div>
+      <button class="help-btn" onclick="showHelp()">? <span>How it works</span></button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><div class="eyebrow">REDIRECT MANAGEMENT</div><h1 id="pageTitle">Dashboard</h1></div>
+      <button class="primary" onclick="openModal()">＋ New redirect</button>
+    </header>
+
+    <section id="dashboardView" class="view">
+      <div class="stats">
+        <div class="stat-card"><div class="stat-icon purple">↗</div><div><span>Total redirects</span><strong id="statTotal">0</strong></div></div>
+        <div class="stat-card"><div class="stat-icon green">✓</div><div><span>Active</span><strong id="statActive">0</strong></div></div>
+        <div class="stat-card"><div class="stat-icon blue">⌁</div><div><span>Repository</span><strong id="statRepo">—</strong></div></div>
+        <div class="stat-card"><div class="stat-icon orange">●</div><div><span>Last sync</span><strong id="statSync">—</strong></div></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><div><h2>Recent redirects</h2><p>Manage your permanent .html links.</p></div><button class="ghost" onclick="setView('redirects')">View all →</button></div>
+        <div id="recentList" class="table-wrap"></div>
+      </div>
+
+      <div class="quick">
+        <div><div class="quick-icon">＋</div><div><b>Create a new redirect</b><p>Choose a slug and destination. The system creates the HTML file in GitHub automatically.</p></div></div>
+        <button class="primary" onclick="openModal()">Create redirect</button>
+      </div>
+    </section>
+
+    <section id="redirectsView" class="view hidden">
+      <div class="panel">
+        <div class="panel-head"><div><h2>All redirects</h2><p>Search, edit, copy or remove your links.</p></div><div class="search"><span>⌕</span><input id="search" placeholder="Search redirects..." oninput="renderRedirects()"></div></div>
+        <div id="allList" class="table-wrap"></div>
+      </div>
+    </section>
+
+    <section id="settingsView" class="view hidden">
+      <div class="settings-grid">
+        <div class="panel">
+          <div class="panel-head"><div><h2>GitHub connection</h2><p>Connect this dashboard to one repository.</p></div></div>
+          <label>GitHub owner / username</label><input id="owner" placeholder="yourusername">
+          <label>Repository</label><input id="repo" placeholder="redirect-manager">
+          <label>Fine-grained token</label><div class="password"><input id="token" type="password" placeholder="github_pat_..."><button onclick="toggleToken()">Show</button></div>
+          <div class="security"><span>✓</span><div><b>Stored locally</b><small>Your token stays in this browser. Use a fine-grained token restricted to this repository with Contents: Read and write.</small></div></div>
+          <button class="primary wide" onclick="connectGitHub()">Save & connect</button>
+        </div>
+        <div class="panel tips"><h2>Setup checklist</h2><div class="tip"><b>01</b><div><strong>Create a repository</strong><p>Upload this project to GitHub and enable GitHub Pages.</p></div></div><div class="tip"><b>02</b><div><strong>Create a fine-grained token</strong><p>Limit it to this repository. Give Contents permission Read and write.</p></div></div><div class="tip"><b>03</b><div><strong>Connect here</strong><p>Save your owner, repository and token. Then create redirects from the dashboard.</p></div></div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="modal" class="modal hidden">
+  <div class="backdrop" onclick="closeModal()"></div>
+  <div class="modal-box">
+    <div class="modal-head"><div><div class="modal-kicker">REDIRECT</div><h2 id="modalTitle">Create redirect</h2></div><button class="close" onclick="closeModal()">×</button></div>
+    <div class="form">
+      <label>Slug <span>URL name</span></label>
+      <div class="slug-row"><div class="prefix" id="prefix">yourdomain.com/</div><input id="slug" placeholder="offer1" autocomplete="off"><div class="suffix">.html</div></div>
+      <div class="hint">Example: <b>offer1</b> creates <b>offer1.html</b>.</div>
+      <label>Destination URL</label>
+      <input id="destination" placeholder="https://example.com/landing-page" autocomplete="off">
+      <label>Notes <span>optional</span></label>
+      <input id="notes" placeholder="e.g. India offer / campaign A">
+      <div class="preview"><div><span>Redirect URL</span><b id="previewUrl">—</b></div><button class="copy-mini" onclick="copyPreview()">Copy</button></div>
+    </div>
+    <div class="modal-actions"><button class="ghost" onclick="closeModal()">Cancel</button><button class="primary" id="saveBtn" onclick="saveRedirect()">Create redirect</button></div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
