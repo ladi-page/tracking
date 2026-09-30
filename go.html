@@ -1,1 +1,15 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Redirecting…</title><script src="config.js"></script><script>const key='redirect_destination_override';const target=localStorage.getItem(key)||window.REDIRECT_CONFIG.destination;if(/^https?:\/\//i.test(target)){window.location.replace(target)}else{document.write('Invalid destination URL. Please check config.js.');}</script></head><body><p>Redirecting…</p></body></html>
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Redirecting...</title></head>
+<body><p id="status">Redirecting...</p>
+<script src="config.js"></script>
+<script>
+const id=new URLSearchParams(location.search).get("id");
+const target=window.REDIRECTS[id];
+if(target){
+  location.replace(target);
+}else{
+  document.getElementById("status").textContent="Redirect not found.";
+}
+</script>
+</body></html>

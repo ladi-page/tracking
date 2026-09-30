@@ -1,27 +1,38 @@
-# GitHub Pages Redirect Manager
+# Multi URL Redirect Manager — GitHub Pages
 
-A simple static redirect page that works on GitHub Pages.
+This is a static GitHub Pages redirect system. No PHP, database, Vercel or Supabase is required.
 
-## Important limitation
-GitHub Pages has no server-side database. The Dashboard's **Save locally** button stores an override in the current browser only. It does NOT change the destination for other visitors.
+## 1. Upload
+Upload all files to a GitHub repository and enable GitHub Pages.
 
-For a global change, edit `config.js`:
+## 2. Add multiple redirects
+Edit `config.js`:
 
 ```js
-window.REDIRECT_CONFIG = {
-  destination: 'https://example.com/'
+window.REDIRECTS = {
+  "offer1": "https://example.com/page1",
+  "offer2": "https://example.com/page2",
+  "promo": "https://example.com/promo"
 };
 ```
 
-Commit/push the change to GitHub. The permanent redirect URL remains `go.html`.
+You can add unlimited entries.
 
-## GitHub Pages setup
-1. Create a GitHub repository.
-2. Upload `index.html`, `go.html`, `config.js`, `script.js`, `style.css` and `README.md`.
-3. Open **Settings → Pages**.
-4. Select **Deploy from a branch**, choose `main` and `/root`, then Save.
-5. Open your GitHub Pages URL.
-6. Use `https://YOUR-USERNAME.github.io/YOUR-REPO/go.html` as the permanent redirect URL.
+## 3. Your redirect URLs
+If your GitHub Pages URL is:
 
-## Change destination globally
-Edit only `config.js`, replace the destination URL, commit the change and wait for GitHub Pages to deploy.
+https://username.github.io/redirect-manager/
+
+Then:
+
+- https://username.github.io/redirect-manager/go.html?id=offer1
+- https://username.github.io/redirect-manager/go.html?id=offer2
+- https://username.github.io/redirect-manager/go.html?id=promo
+
+## 4. Change a destination
+Change the URL in `config.js` and commit the change. The same redirect URL will then send visitors to the new destination.
+
+## Important
+The dashboard is a convenient editor/preview for a static GitHub Pages site. GitHub Pages cannot write files back to the repository from browser JavaScript. Therefore, changes made with the dashboard are local to that browser until you update `config.js` and commit it to GitHub.
+
+For true online editing where one dashboard change immediately affects every visitor without a GitHub commit, a backend/database is required.
