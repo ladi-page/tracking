@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GitHub Redirect Manager</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <h1>Redirect Manager</h1>
+  <p class="muted">Create and edit separate .html redirect URLs directly from GitHub.</p>
+
+  <div class="card">
+    <h2>GitHub Settings</h2>
+    <label>GitHub Username / Owner</label>
+    <input id="owner" placeholder="yourusername">
+    <label>Repository Name</label>
+    <input id="repo" placeholder="redirect-manager">
+    <label>GitHub Personal Access Token</label>
+    <input id="token" type="password" placeholder="github_pat_...">
+    <p class="hint">Use a fine-grained token with access to this repository and Contents: Read and write. The token is stored only in this browser.</p>
+    <button onclick="saveSettings()">Save Settings</button>
+  </div>
+
+  <div class="card">
+    <h2>Add / Edit Redirect</h2>
+    <label>Slug / File Name</label>
+    <div class="fileinput"><input id="slug" placeholder="go1"><span>.html</span></div>
+    <label>Destination URL</label>
+    <input id="destination" placeholder="https://example.com/page">
+    <button onclick="publishRedirect()">Create / Update Redirect</button>
+    <p id="status"></p>
+  </div>
+
+  <div class="card">
+    <h2>How it works</h2>
+    <ol>
+      <li>Enter GitHub owner, repository and token.</li>
+      <li>Enter a Slug such as <b>go1</b> and destination URL.</li>
+      <li>Click Create / Update.</li>
+      <li>The system creates <b>go1.html</b> directly inside your GitHub repository.</li>
+      <li>Your live URL becomes <b>go1.html</b> — no <b>?id=</b>.</li>
+    </ol>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
