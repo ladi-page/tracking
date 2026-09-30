@@ -1,3 +1,0 @@
-import {NextRequest,NextResponse} from 'next/server';import {adminClient} from '@/lib/admin'
-export const dynamic='force-dynamic'
-export async function GET(req:NextRequest,{params}:{params:Promise<{slug:string}>}){const {slug}=await params;const s=adminClient();const {data,error}=await s.from('redirects').select('id,destination_url,is_active').eq('slug',slug.toLowerCase()).maybeSingle();if(error||!data||!data.is_active)return new NextResponse('Redirect not found',{status:404,headers:{'content-type':'text/plain; charset=utf-8'}});await s.rpc('increment_redirect_click',{redirect_id:data.id});return NextResponse.redirect(data.destination_url,302)}
